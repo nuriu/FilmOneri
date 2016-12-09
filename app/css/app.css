@@ -1,5 +1,43 @@
-.filmgoster {vertical-align: middle;}
-.filmgoster i{color: #fff; font-size: 50px; vertical-align: middle;}
-.yazi {font-size: 12px;}
-#filmAdi{color: #ffab40; font-size: 18px;}
-#filmAdi:hover{transition-duration:0.3s; color: #ffe0b2;}
+.filmgoster {
+    vertical-align: middle;
+}
+
+.filmgoster i{
+    color: #fff;
+    font-size: 50px;
+    vertical-align: middle;
+}
+
+.yazi {
+    font-size: 12px;
+}
+
+#filmAdi{
+    color: #ffab40;
+    font-size: 18px;
+}
+
+#filmAdi:hover{
+    transition-duration:0.3s;
+    color: #ffe0b2;
+}
+
+#icerik {
+    padding: 25px;
+    max-height: 95vh;
+}
+
+#tumFilmler {
+    height: 90vh;
+    overflow-y: auto;
+}
+
+#izlenenFilmler {
+    height: 90vh;
+    overflow-y: auto;
+}
+
+#onerilenFilmler {
+    height: 90vh;
+    overflow-y: auto;
+}
