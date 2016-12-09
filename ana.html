@@ -146,11 +146,23 @@
             </div>
         </div>
     </div>
-    <script>$(document).ready(() => {
-$(document).ready(function() {
-    Materialize.updateTextFields();
-  });
-});</script>
+    <script>
+        $(document).ready(() => {
+            Materialize.updateTextFields();
+        });
+        
+        function dbOlustur(){
+            var fs = require("fs");
+            var SQL = require("sql.js");
+            var db = new SQL.Database();
+            db.run("CREATE TABLE IF NOT EXISTS test(DENEME TEXT NOT NULL);");
+
+            // veritabanını dosyaya kaydet.
+            let data = db.export();
+            let buffer = new Buffer(data);
+            fs.writeFileSync("./app/data/db.sqlite", buffer);
+        }
+    </script>
 </body>
 
 </html>

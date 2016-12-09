@@ -7,7 +7,8 @@ module.exports = {
   debug: true,
   entry: {
     'app': [
-      './app/src/app'
+      './app/src/app',
+      './app/src/db'
     ]
   },
   output: {
