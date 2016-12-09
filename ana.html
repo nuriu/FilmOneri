@@ -150,12 +150,24 @@
         $(document).ready(() => {
             Materialize.updateTextFields();
         });
-        
+
         function dbOlustur(){
             var fs = require("fs");
             var SQL = require("sql.js");
             var db = new SQL.Database();
-            db.run("CREATE TABLE IF NOT EXISTS test(DENEME TEXT NOT NULL);");
+            db.run("CREATE TABLE IF NOT EXISTS Filmler (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+                                                        FilmAdi TEXT NOT NULL,\
+                                                        Yonetmen TEXT NOT NULL,\
+                                                        Senarist TEXT NOT NULL,\
+                                                        Oyuncu TEXT NOT NULL,\
+                                                        Tur TEXT NOT NULL,\
+                                                        IMDBPuani REAL NOT NULL,\
+                                                        Aciklama TEXT NOT NULL,\
+                                                        AfisURL TEXT NOT NULL);");
+
+            db.run("CREATE TABLE IF NOT EXISTS IzlenenFilmler (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+                                                               FilmID INTEGER NOT NULL,\
+                                                               FOREIGN KEY(`FilmID`) REFERENCES `Filmler`(`ID`));");
 
             // veritabanını dosyaya kaydet.
             let data = db.export();
