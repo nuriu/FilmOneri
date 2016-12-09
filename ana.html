@@ -18,12 +18,12 @@
     <script type="text/javascript" src="build/app.js"></script>
 </head>
 
-<body>
+<body class="blue-grey darken-4">
     <div class="row">
         <!-- Tüm Filmler -->
         <div class="col s12 m4 l4">
             <div class="row">
-                <div class="card blue-grey darken-1">
+                <div class="card blue-grey darken-4 z-depth-5">
                     <div class="card-content white-text">
                         <span class="card-title center-align">Tüm Filmler</span>
                         <div class="row">
@@ -31,21 +31,27 @@
                                 <div class="row">
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">textsms</i>
-                                        <input type="text" id="autocomplete-input" class="autocomplete">
-                                        <label for="autocomplete-input">Film Ara</label>
+                                        <input type="text" id="autocomplete-tum" class="autocomplete">
+                                        <label for="autocomplete-tum">Film/Yönetmen/Oyuncu Ara</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <ul class="collection">
-                            <li class="collection-item avatar blue-grey lighten-1">
-                                <i class="material-icons circle red">play_arrow</i>
-                                <span class="title">Film Adı</span>
-                                <p>Oyuncular <br> Yönetmen
-                                </p>
-                                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                            </li>
-                        </ul>
+                        <div class="card horizontal blue-grey darken-3 z-depth-4">
+                            <div class="card-image">
+                                <img src="http://lorempixel.com/125/175/nature/6">
+                            </div>
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <p><a href="#" id="filmAdi">Film Adı</a></p>
+                                    <p>Oyuncular</p>
+                                    <p>Yönetmen</p>
+                                </div>
+                                <div class="card-action">
+                                    <a href="#">İZLEDİM</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,18 +60,33 @@
         <!-- İzlenen Filmler -->
         <div class="col s12 m4 l4">
             <div class="row">
-                <div class="card blue-grey darken-1">
+                <div class="card blue-grey darken-3 z-depth-5">
                     <div class="card-content white-text">
                         <span class="card-title center-align">İzlenen Filmler</span>
-                        <ul class="collection">
-                            <li class="collection-item avatar blue-grey lighten-1">
-                                <i class="material-icons circle red">play_arrow</i>
-                                <span class="title">Film Adı</span>
-                                <p>Oyuncular <br> Yönetmen
-                                </p>
-                                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                            </li>
-                        </ul>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">textsms</i>
+                                        <input type="text" id="autocomplete-izlenen" class="autocomplete">
+                                        <label for="autocomplete-izlenen">Film Ara</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card horizontal blue-grey darken-2 z-depth-4">
+                            <div class="card-image">
+                                <img src="http://lorempixel.com/100/130/nature/6">
+                            </div>
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <p><a href="#" id="filmAdi">Film Adı</a></p>
+                                    <hr>
+                                    <p>Oyuncular</p>
+                                    <p>Yönetmen</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -73,18 +94,53 @@
         <!-- Önerilen Filmler -->
         <div class="col s12 m4 l4">
             <div class="row">
-                <div class="card blue-grey darken-1">
+                <div class="card blue-grey darken-2 z-depth-5">
                     <div class="card-content white-text">
                         <span class="card-title center-align">Önerilen Filmler</span>
-                        <ul class="collection">
-                            <li class="collection-item avatar blue-grey lighten-1">
-                                <i class="material-icons circle red">play_arrow</i>
-                                <span class="title">Film Adı</span>
-                                <p>Oyuncular <br> Yönetmen
-                                </p>
-                                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                            </li>
-                        </ul>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">textsms</i>
+                                        <input type="text" id="autocomplete-onerilen" class="autocomplete">
+                                        <label for="autocomplete-onerilen">Film Ara</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card horizontal blue-grey darken-1 z-depth-4">
+                            <div class="card-image">
+                                <img src="http://lorempixel.com/125/175/nature/6">
+                            </div>
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <p><a href="#" id="filmAdi">Film Adı</a></p>
+                                    <p>Oyuncular</p>
+                                    <p>Yönetmen</p>
+                                </div>
+                                <div class="card-action">
+                                    <a href="#">İZLEDİM</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card horizontal blue-grey darken-1 z-depth-4">
+                            <div class="card-image">
+                                <img src="http://lorempixel.com/125/175/nature/6">
+                            </div>
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <p><a href="#" id="filmAdi">Film Adı</a></p>
+                                    <p>Oyuncular</p>
+                                    <p>Yönetmen</p>
+                                </div>
+                                <div class="card-action">
+                                    <a href="#">İZLEDİM</a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
