@@ -3,11 +3,10 @@
 const fs = require("fs");
 const SQL = require("sql.js");
 
-let db = new SQL.Database();
-
-db.run("CREATE TABLE IF NOT EXISTS test (col1, col2);");
-
-// veritabanını dosyaya kaydet.
-let data = db.export();
-let buffer = new Buffer(data);
-fs.writeFileSync("../db.sqlite", buffer);
+$(document).ready(() => {
+    let filebuffer = fs.readFileSync("./app/data/db.sqlite");
+    let db = new SQL.Database(filebuffer);
+    let a = db.exec("SELECT * FROM test");
+    console.log(db);
+    console.log(a);
+});
