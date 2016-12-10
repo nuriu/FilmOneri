@@ -7,8 +7,8 @@ module.exports = {
   debug: true,
   entry: {
     'app': [
-      './app/src/app',
-      './app/src/db'
+      './app/src/veritabani',
+      './app/src/app'
     ]
   },
   output: {

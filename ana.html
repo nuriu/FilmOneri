@@ -279,7 +279,7 @@
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s12 m12 l6">
-                            <select multiple id="filmTurleri">
+                            <select multiple id="kFilmTurleri">
                                 <option value="" disabled selected>Türleri Seçin</option>
                                 <option value="Aksiyon">Aksiyon</option>
                                 <option value="Komedi">Komedi</option>
@@ -303,52 +303,52 @@
                             <label>Filmin Türü</label>
                         </div>
                         <div class="input-field col s12 m12 l6">
-                            <input id="filmAdi" type="text" class="validate" length="50">
-                            <label for="filmAdi">Filmin Adı</label>
+                            <input id="kFilmAdi" type="text" class="validate" length="50">
+                            <label for="kFilmAdi">Filmin Adı</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m12 l8">
-                            <textarea id="filmAciklamasi" type="text" class="materialize-textarea" length="250"></textarea>
-                            <label for="filmAciklamasi">Filmin Konusu</label>
+                            <textarea id="kFilmAciklamasi" type="text" class="materialize-textarea" length="250"></textarea>
+                            <label for="kFilmAciklamasi">Filmin Konusu</label>
                         </div>
                         <div class="input-field col s12 m12 l2">
-                            <input id="filmYili" type="text" class="validate" length="4">
-                            <label for="filmYili">Çıkış Yılı</label>
+                            <input id="kFilmYili" type="text" class="validate" length="4">
+                            <label for="kFilmYili">Çıkış Yılı</label>
                         </div>
                         <div class="input-field col s12 m12 l2">
-                            <input id="filmPuani" type="text" class="validate" length="3">
-                            <label for="filmPuani">IMDB Puanı</label>
+                            <input id="kFilmPuani" type="text" class="validate" length="3">
+                            <label for="kFilmPuani">IMDB Puanı</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m12 l4">
-                            <textarea id="filmYonetmenleri" type="text" class="materialize-textarea" length="250"></textarea>
-                            <label for="filmYonetmenleri">Filmin Yönetmen(ler)i</label>
+                            <textarea id="kFilmYonetmenleri" type="text" class="materialize-textarea" length="250"></textarea>
+                            <label for="kFilmYonetmenleri">Filmin Yönetmen(ler)i</label>
                         </div>
                         <div class="input-field col s12 m12 l4">
-                            <textarea id="filmSenaristleri" type="text" class="materialize-textarea" length="250"></textarea>
-                            <label for="filmSenaristleri">Filmin Senarist(ler)i</label>
+                            <textarea id="kFilmSenaristleri" type="text" class="materialize-textarea" length="250"></textarea>
+                            <label for="kFilmSenaristleri">Filmin Senarist(ler)i</label>
                         </div>
                         <div class="input-field col s12 m12 l4">
-                            <textarea id="filmOyunculari" type="text" class="materialize-textarea" length="250"></textarea>
-                            <label for="filmOyunculari">Filmin Oyuncu(lar)ı</label>
+                            <textarea id="kFilmOyunculari" type="text" class="materialize-textarea" length="250"></textarea>
+                            <label for="kFilmOyunculari">Filmin Oyuncu(lar)ı</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12 m12 l12">
-                            <input id="filmAfisUrl" type="text" class="validate">
-                            <label for="filmAfisUrl">Film Afiş Linki</label>
+                            <input id="kFilmAfisUrl" type="text" class="validate">
+                            <label for="kFilmAfisUrl">Film Afiş Linki</label>
                         </div>
                     </div>
                     <div class="row">
-                        <p class="flow-text"><strong>NOT:</strong> Filmin Yönetmen(ler)i, Senarist(ler)i, Oyuncu(lar)ı alanlarına kişileri virgül
+                        <p><strong>NOT:</strong> Filmin Yönetmen(ler)i, Senarist(ler)i, Oyuncu(lar)ı alanlarına kişileri virgül
                             ile ayırarak giriş yapın.</p>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect waves-light btn purple darken-1">EKLE</a>
+                <a href="#!" class="modal-action modal-close waves-effect waves-light btn purple darken-1" id="filmEkle">EKLE</a>
             </div>
         </div>
 
@@ -358,32 +358,17 @@
         $(document).ready(() => {
             $(".modal").modal();
             $("select").material_select();
+
+            $('input.autocomplete').autocomplete({
+                data: {
+                    "Apple": null,
+                    "Microsoft": null,
+                    "Google": 'http://placehold.it/250x250'
+                }
+            });
+
             Materialize.updateTextFields();
         });
-
-        function dbOlustur(){
-            var fs = require("fs");
-            var SQL = require("sql.js");
-            var db = new SQL.Database();
-            db.run("CREATE TABLE IF NOT EXISTS Filmler (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
-                                                        FilmAdi TEXT NOT NULL,\
-                                                        Yonetmen TEXT NOT NULL,\
-                                                        Senarist TEXT NOT NULL,\
-                                                        Oyuncu TEXT NOT NULL,\
-                                                        Tur TEXT NOT NULL,\
-                                                        IMDBPuani REAL NOT NULL,\
-                                                        Aciklama TEXT NOT NULL,\
-                                                        AfisURL TEXT NOT NULL);");
-
-            db.run("CREATE TABLE IF NOT EXISTS IzlenenFilmler (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
-                                                               FilmID INTEGER NOT NULL,\
-                                                               FOREIGN KEY(`FilmID`) REFERENCES `Filmler`(`ID`));");
-
-            // veritabanını dosyaya kaydet.
-            let data = db.export();
-            let buffer = new Buffer(data);
-            fs.writeFileSync("./app/data/db.sqlite", buffer);
-        }
     </script>
 </body>
 
