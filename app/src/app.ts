@@ -7,6 +7,8 @@ let db: Veritabani;
 $(document).ready(() => {
     db = new Veritabani();
 
+    db.FilmleriListele();
+
     document.getElementById("filmEkle").addEventListener("click", () => {
         let turler = $("#kFilmTurleri").val();
         let tur: string = "";

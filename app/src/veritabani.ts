@@ -69,6 +69,31 @@ export class Veritabani {
         this.Kaydet();
     }
 
+    public FilmleriListele() {
+        let filmler = this.db.exec("SELECT * FROM Filmler");
+        filmler = filmler[0].values;
+        filmler.forEach((film) => {
+            this.FilmKartBloguEkle("tumFilmlerListe", film);
+        });
+        console.log(filmler);
+    }
+
+    private FilmKartBloguEkle(id: string, film: any) {
+        let kod: string = "";
+        kod += '<div class="row"><div class="card horizontal blue-grey darken-3 z-depth-4">';
+        kod += '<div class="card-image" id="' + film[0] + '">';
+        kod += '<img src="' + film[9] + '"></div>';
+        kod += '<div class="card-stacked"><div class="card-content">';
+        kod += '<p id="' + film[0] + '"><a href="#" id="filmAdi">' + film[1] + "</a></p>";
+        kod += "<p>Tür: " + film[5] + "</p><hr/>";
+        kod += "<p style='padding-bottom:5px;'>Yönetmen: " + film[2].split(",", 3) + "</p>";
+        kod += "<p>Oyuncular: " + film[4].split(",", 4) + "</p><br/>";
+        kod += '<div class="card-action"><a href="#">İZLEDİM</a></div>';
+        kod += "</div>";
+        kod += "</div></div>";
+        $("#" + id).append(kod);
+    }
+
     private Kaydet() {
         let veri = this.db.export();
         let buffer = new Buffer(veri);
