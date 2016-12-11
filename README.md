@@ -11,6 +11,9 @@
 - Electron
 - TypeScript
 - jQuery
+- sql.js
+- Materialize CSS
+- ts-bayes
 
 Gerekli paketleri kurmak için gerekli komut;
 > npm install
