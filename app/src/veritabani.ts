@@ -23,28 +23,33 @@ export class Veritabani {
 
             this.db = new SQL.Database();
 
-            this.db.run("CREATE TABLE IF NOT EXISTS Filmler (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
-                                                        FilmAdi TEXT NOT NULL,\
-                                                        Yonetmen TEXT NOT NULL,\
-                                                        Senarist TEXT NOT NULL,\
-                                                        Oyuncu TEXT NOT NULL,\
-                                                        Tur TEXT NOT NULL,\
-                                                        Yil TEXT NOT NULL,\
-                                                        IMDBPuani REAL NOT NULL,\
-                                                        Aciklama TEXT NOT NULL,\
-                                                        AfisURL TEXT NOT NULL);");
+            this.db.run("CREATE TABLE IF NOT EXISTS Filmler (\
+                ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+                FilmAdi TEXT NOT NULL,\
+                Yonetmen TEXT NOT NULL,\
+                Senarist TEXT NOT NULL,\
+                Oyuncu TEXT NOT NULL,\
+                Tur TEXT NOT NULL,\
+                Yil TEXT NOT NULL,\
+                IMDBPuani REAL NOT NULL,\
+                Aciklama TEXT NOT NULL,\
+                AfisURL TEXT NOT NULL\
+            );");
 
-            this.db.run("CREATE TABLE IF NOT EXISTS IzlenenFilmler (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
-                                                               FilmID INTEGER NOT NULL,\
-                                                               FOREIGN KEY(`FilmID`) REFERENCES `Filmler`(`ID`));");
+            this.db.run("CREATE TABLE IF NOT EXISTS BegenilenFilmler (\
+                ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+                FilmID INTEGER NOT NULL,\
+                FOREIGN KEY(`FilmID`) REFERENCES `Filmler`(`ID`)\
+            );");
+
+            this.db.run("CREATE TABLE IF NOT EXISTS BegenilmeyenFilmler (\
+                ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+                FilmID INTEGER NOT NULL,\
+                FOREIGN KEY(`FilmID`) REFERENCES `Filmler`(`ID`)\
+            );");
 
             this.Kaydet();
         }
-
-        let a = this.db.exec("SELECT * FROM Filmler");
-
-        console.log(this.db);
-        console.log(a);
     }
 
     public FilmEkle(ad: string, aciklama: string, yil: string, puan: string, tur: string,
