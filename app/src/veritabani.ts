@@ -1,5 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 
+import { Bayes } from "ts-bayes";
+
 const fs = require("fs");
 const SQL = require("sql.js");
 
@@ -11,6 +13,7 @@ $(document).ready(() => {
 export class Veritabani {
     private dosya: any;
     private db: any;
+    private siniflandirici: Bayes;
 
     constructor() {
         if (fs.existsSync("./app/data/db.sqlite")) {
@@ -50,10 +53,14 @@ export class Veritabani {
 
             this.Kaydet();
         }
+
+        this.siniflandirici = new Bayes({
+            tokenizer: (metin) => { return metin.split(", "); }
+        });
     }
 
     public FilmEkle(ad: string, aciklama: string, yil: string, puan: string, tur: string,
-                    yonetmen: string, senarist: string, oyuncu: string, afis: string) {
+        yonetmen: string, senarist: string, oyuncu: string, afis: string) {
 
         let komut: string = "";
 
@@ -80,7 +87,8 @@ export class Veritabani {
         filmler.forEach((film) => {
             this.FilmKartBloguEkle("tumFilmlerListe", film);
         });
-        console.log(filmler);
+
+        this.test();
     }
 
     private FilmKartBloguEkle(id: string, film: any) {
@@ -99,9 +107,82 @@ export class Veritabani {
         $("#" + id).append(kod);
     }
 
+    private test() {
+        let tumFilmler = this.db.exec("SELECT * FROM Filmler");
+        let begenilenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilenFilmler WHERE Filmler.ID = BegenilenFilmler.FilmID");
+        let begenilmeyenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilmeyenFilmler WHERE Filmler.ID = BegenilmeyenFilmler.FilmID");
+
+        tumFilmler = tumFilmler[0].values;
+        begenilenFilmler = begenilenFilmler[0].values;
+        begenilmeyenFilmler = begenilmeyenFilmler[0].values;
+
+        console.log("");
+        console.log("Beğenilen Filmler;");
+        begenilenFilmler.forEach((film) => {
+            let ifade = film[1] + ", " +
+                film[2] + ", " +
+                film[3] + ", " +
+                film[4] + ", " +
+                film[5] + ", " +
+                film[7] + ", " +
+                film[8];
+
+            console.log(film[1]);
+            this.siniflandirici.learn(ifade, "önerilir");
+        });
+
+        console.log("");
+        console.log("Beğenilmeyen Filmler;");
+        begenilmeyenFilmler.forEach((film) => {
+            let ifade = film[1] + ", " +
+                film[2] + ", " +
+                film[3] + ", " +
+                film[4] + ", " +
+                film[5] + ", " +
+                film[7] + ", " +
+                film[8];
+
+            console.log(film[1]);
+            this.siniflandirici.learn(ifade, "önerilmez");
+        });
+
+        console.log("");
+        console.log("Önerilen Filmler;");
+        tumFilmler.forEach((film) => {
+            let ifade = film[1] + ", " +
+                film[2] + ", " +
+                film[3] + ", " +
+                film[4] + ", " +
+                film[5] + ", " +
+                film[7] + ", " +
+                film[8];
+
+            if (this.siniflandirici.categorize(ifade) === "önerilir") {
+                console.log(film[1]);
+            }
+        });
+
+        console.log("");
+        console.log("Önerilmeyen Filmler;");
+        tumFilmler.forEach((film) => {
+            let ifade = film[1] + ", " +
+                film[2] + ", " +
+                film[3] + ", " +
+                film[4] + ", " +
+                film[5] + ", " +
+                film[7] + ", " +
+                film[8];
+
+            if (this.siniflandirici.categorize(ifade) === "önerilmez") {
+                console.log(film[1]);
+            }
+        });
+    }
+
     private Kaydet() {
         let veri = this.db.export();
         let buffer = new Buffer(veri);
         fs.writeFileSync("./app/data/db.sqlite", buffer);
     }
+
 }
