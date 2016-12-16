@@ -60,7 +60,7 @@ export class Veritabani {
     }
 
     public FilmEkle(ad: string, aciklama: string, yil: string, puan: string, tur: string,
-        yonetmen: string, senarist: string, oyuncu: string, afis: string) {
+                    yonetmen: string, senarist: string, oyuncu: string, afis: string) {
 
         let komut: string = "";
 
@@ -99,9 +99,10 @@ export class Veritabani {
         kod += '<div class="card-stacked"><div class="card-content">';
         kod += '<p id="' + film[0] + '"><a href="#" id="filmAdi">' + film[1] + "</a></p>";
         kod += "<p>Tür: " + film[5] + "</p><hr/>";
-        kod += "<p style='padding-bottom:5px;'>Yönetmen: " + film[2].split(",", 3) + "</p>";
-        kod += "<p>Oyuncular: " + film[4].split(",", 4) + "</p><br/>";
-        kod += '<div class="card-action"><a href="#">İZLEDİM</a></div>';
+        kod += "<p style='padding-bottom:5px;'>Yönetmen(ler): " + film[2] + "</p>";
+        kod += "<p style='padding-bottom:5px;'>Senarist(ler): " + film[3] + "</p>";
+        kod += "<p>Oyuncular: " + film[4] + "</p><br/>";
+        kod += '<div class="card-action"><a href="#">BEĞENDİM</a><a href="#">BEĞENMEDİM</a></div>';
         kod += "</div>";
         kod += "</div></div>";
         $("#" + id).append(kod);
@@ -116,8 +117,9 @@ export class Veritabani {
         begenilenFilmler = begenilenFilmler[0].values;
         begenilmeyenFilmler = begenilmeyenFilmler[0].values;
 
-        console.log("");
+        console.log("-----------------------------------------------");
         console.log("Beğenilen Filmler;");
+        console.log("-----------------------------------------------");
         begenilenFilmler.forEach((film) => {
             let ifade = film[1] + ", " +
                 film[2] + ", " +
@@ -131,8 +133,9 @@ export class Veritabani {
             this.siniflandirici.learn(ifade, "önerilir");
         });
 
-        console.log("");
+        console.log("-----------------------------------------------");
         console.log("Beğenilmeyen Filmler;");
+        console.log("-----------------------------------------------");
         begenilmeyenFilmler.forEach((film) => {
             let ifade = film[1] + ", " +
                 film[2] + ", " +
@@ -146,8 +149,9 @@ export class Veritabani {
             this.siniflandirici.learn(ifade, "önerilmez");
         });
 
-        console.log("");
+        console.log("-----------------------------------------------");
         console.log("Önerilen Filmler;");
+        console.log("-----------------------------------------------");
         tumFilmler.forEach((film) => {
             let ifade = film[1] + ", " +
                 film[2] + ", " +
@@ -162,8 +166,9 @@ export class Veritabani {
             }
         });
 
-        console.log("");
+        console.log("-----------------------------------------------");
         console.log("Önerilmeyen Filmler;");
+        console.log("-----------------------------------------------");
         tumFilmler.forEach((film) => {
             let ifade = film[1] + ", " +
                 film[2] + ", " +
@@ -177,6 +182,7 @@ export class Veritabani {
                 console.log(film[1]);
             }
         });
+        console.log("-----------------------------------------------");
     }
 
     private Kaydet() {

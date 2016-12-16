@@ -27,18 +27,8 @@
     max-height: 95vh;
 }
 
-#tumFilmler {
-    height: 90vh;
-    overflow-y: auto;
-}
-
-#izlenenFilmler {
-    height: 90vh;
-    overflow-y: auto;
-}
-
-#onerilenFilmler {
-    height: 90vh;
+.filmKart {
+    height: 88.5vh;
     overflow-y: auto;
 }
 
