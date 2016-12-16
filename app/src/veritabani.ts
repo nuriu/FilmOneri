@@ -87,6 +87,8 @@ export class Veritabani {
     }
 
     public Ogren() {
+        this.begenilenID = new Array<number>();
+        this.begenilmeyenID = new Array<number>();
         let begenilenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilenFilmler WHERE Filmler.ID = BegenilenFilmler.FilmID");
         let begenilmeyenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilmeyenFilmler WHERE Filmler.ID = BegenilmeyenFilmler.FilmID");
 
@@ -101,7 +103,7 @@ export class Veritabani {
                 film[5] + ", " +
                 film[7] + ", " +
                 film[8];
-            console.log(film[1]);
+            this.begenilenID.push(film[0]);
             this.siniflandirici.learn(ifade, "önerilir");
         });
 
@@ -113,6 +115,7 @@ export class Veritabani {
                 film[5] + ", " +
                 film[7] + ", " +
                 film[8];
+            this.begenilmeyenID.push(film[0]);
             this.siniflandirici.learn(ifade, "önerilmez");
         });
     }
@@ -145,6 +148,33 @@ export class Veritabani {
     }
 
     public OnerilenFilmleriListele() {
+        this.Ogren();
+
+        $("#onerilenFilmlerListe").html("");
+        let tumFilmler = this.db.exec("SELECT * FROM Filmler");
+        tumFilmler = tumFilmler[0].values;
+
+        tumFilmler.forEach((film) => {
+            let kontrol = true;
+            this.begenilenID.forEach((id) => {
+                if (film[0] === id) {
+                    kontrol = false;
+                }
+            });
+
+            if (kontrol) {
+                let ifade = film[1] + ", " +
+                    film[2] + ", " +
+                    film[3] + ", " +
+                    film[4] + ", " +
+                    film[5] + ", " +
+                    film[7] + ", " +
+                    film[8];
+                if (this.siniflandirici.categorize(ifade) === "önerilir") {
+                    this.FilmKartBloguEkle("onerilenFilmlerListe", film, true);
+                }
+            }
+        });
     }
 
     private FilmKartBloguEkle(id: string, film: any, tur: boolean) {
