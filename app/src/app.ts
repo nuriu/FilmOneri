@@ -9,9 +9,10 @@ $(document).ready(() => {
     document.getElementById("menuBegendiginizFilmler").addEventListener("click", begenilenFilmleriListele);
     document.getElementById("menuBegenmediginizFilmler").addEventListener("click", begenilmeyenFilmleriListele);
     document.getElementById("menuOnerdigimizFilmler").addEventListener("click", onerilenFilmleriListele);
+
     db = new Veritabani();
 
-    db.FilmleriListele();
+    db.TumFilmleriListele();
 
     document.getElementById("filmEkle").addEventListener("click", () => {
         let turler = $("#kFilmTurleri").val();
@@ -37,24 +38,25 @@ $(document).ready(() => {
 
 function tumFilmleriListele() {
     if ($("a[href='#tumFilmler']").hasClass("active") === false) {
-        console.log("Tüm filmleri listelemek istendi.");
+        db.TumFilmleriListele();
     }
 }
 
 function begenilenFilmleriListele() {
     if ($("a[href='#begendiginizFilmler']").hasClass("active") === false) {
-        console.log("Beğenilen filmleri listelemek istendi.");
+        db.BegenilenFilmleriListele();
     }
 }
 
 function begenilmeyenFilmleriListele() {
     if ($("a[href='#begenmediginizFilmler']").hasClass("active") === false) {
-        console.log("Beğenilmeyen filmleri listelemek istendi.");
+        db.BegenilmeyenFilmleriListele();
     }
 }
 
 function onerilenFilmleriListele() {
     if ($("a[href='#onerdigimizFilmler']").hasClass("active") === false) {
-        console.log("Önerilen filmleri listelemek istendi.");
+        db.Ogren();
+        db.OnerilenFilmleriListele();
     }
 }

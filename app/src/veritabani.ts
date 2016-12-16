@@ -14,8 +14,13 @@ export class Veritabani {
     private dosya: any;
     private db: any;
     private siniflandirici: Bayes;
+    private begenilenID: number[];
+    private begenilmeyenID: number[];
 
     constructor() {
+        this.begenilenID = new Array<number>();
+        this.begenilmeyenID = new Array<number>();
+
         if (fs.existsSync("./app/data/db.sqlite")) {
             console.log("Veritabanı bulundu!");
 
@@ -60,7 +65,7 @@ export class Veritabani {
     }
 
     public FilmEkle(ad: string, aciklama: string, yil: string, puan: string, tur: string,
-                    yonetmen: string, senarist: string, oyuncu: string, afis: string) {
+        yonetmen: string, senarist: string, oyuncu: string, afis: string) {
 
         let komut: string = "";
 
@@ -81,17 +86,68 @@ export class Veritabani {
         this.Kaydet();
     }
 
-    public FilmleriListele() {
+    public Ogren() {
+        let begenilenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilenFilmler WHERE Filmler.ID = BegenilenFilmler.FilmID");
+        let begenilmeyenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilmeyenFilmler WHERE Filmler.ID = BegenilmeyenFilmler.FilmID");
+
+        begenilenFilmler = begenilenFilmler[0].values;
+        begenilmeyenFilmler = begenilmeyenFilmler[0].values;
+
+        begenilenFilmler.forEach((film) => {
+            let ifade = film[1] + ", " +
+                film[2] + ", " +
+                film[3] + ", " +
+                film[4] + ", " +
+                film[5] + ", " +
+                film[7] + ", " +
+                film[8];
+            console.log(film[1]);
+            this.siniflandirici.learn(ifade, "önerilir");
+        });
+
+        begenilmeyenFilmler.forEach((film) => {
+            let ifade = film[1] + ", " +
+                film[2] + ", " +
+                film[3] + ", " +
+                film[4] + ", " +
+                film[5] + ", " +
+                film[7] + ", " +
+                film[8];
+            this.siniflandirici.learn(ifade, "önerilmez");
+        });
+    }
+
+    public TumFilmleriListele() {
+        $("#tumFilmlerListe").html("");
         let filmler = this.db.exec("SELECT * FROM Filmler");
         filmler = filmler[0].values;
         filmler.forEach((film) => {
-            this.FilmKartBloguEkle("tumFilmlerListe", film);
+            this.FilmKartBloguEkle("tumFilmlerListe", film, true);
         });
-
-        this.test();
     }
 
-    private FilmKartBloguEkle(id: string, film: any) {
+    public BegenilenFilmleriListele() {
+        $("#begenilenFilmlerListe").html("");
+        let begenilenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilenFilmler WHERE Filmler.ID = BegenilenFilmler.FilmID");
+        begenilenFilmler = begenilenFilmler[0].values;
+        begenilenFilmler.forEach((film) => {
+            this.FilmKartBloguEkle("begenilenFilmlerListe", film, false);
+        });
+    }
+
+    public BegenilmeyenFilmleriListele() {
+        $("#begenilmeyenFilmlerListe").html("");
+        let begenilmeyenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilmeyenFilmler WHERE Filmler.ID = BegenilmeyenFilmler.FilmID");
+        begenilmeyenFilmler = begenilmeyenFilmler[0].values;
+        begenilmeyenFilmler.forEach((film) => {
+            this.FilmKartBloguEkle("begenilmeyenFilmlerListe", film, false);
+        });
+    }
+
+    public OnerilenFilmleriListele() {
+    }
+
+    private FilmKartBloguEkle(id: string, film: any, tur: boolean) {
         let kod: string = "";
         kod += '<div class="row"><div class="card horizontal blue-grey darken-3 z-depth-4">';
         kod += '<div class="card-image" id="' + film[0] + '">';
@@ -102,87 +158,14 @@ export class Veritabani {
         kod += "<p style='padding-bottom:5px;'>Yönetmen(ler): " + film[2] + "</p>";
         kod += "<p style='padding-bottom:5px;'>Senarist(ler): " + film[3] + "</p>";
         kod += "<p>Oyuncular: " + film[4] + "</p><br/>";
-        kod += '<div class="card-action"><a href="#">BEĞENDİM</a><a href="#">BEĞENMEDİM</a></div>';
+        if (tur) {
+            kod += '<div class="card-action"><a href="#">BEĞENDİM</a><a href="#">BEĞENMEDİM</a></div>';
+        } else {
+            kod += "<p>Konu: " + film[8] + "</p><br/>";
+        }
         kod += "</div>";
         kod += "</div></div>";
         $("#" + id).append(kod);
-    }
-
-    private test() {
-        let tumFilmler = this.db.exec("SELECT * FROM Filmler");
-        let begenilenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilenFilmler WHERE Filmler.ID = BegenilenFilmler.FilmID");
-        let begenilmeyenFilmler = this.db.exec("SELECT * FROM Filmler, BegenilmeyenFilmler WHERE Filmler.ID = BegenilmeyenFilmler.FilmID");
-
-        tumFilmler = tumFilmler[0].values;
-        begenilenFilmler = begenilenFilmler[0].values;
-        begenilmeyenFilmler = begenilmeyenFilmler[0].values;
-
-        console.log("-----------------------------------------------");
-        console.log("Beğenilen Filmler;");
-        console.log("-----------------------------------------------");
-        begenilenFilmler.forEach((film) => {
-            let ifade = film[1] + ", " +
-                film[2] + ", " +
-                film[3] + ", " +
-                film[4] + ", " +
-                film[5] + ", " +
-                film[7] + ", " +
-                film[8];
-
-            console.log(film[1]);
-            this.siniflandirici.learn(ifade, "önerilir");
-        });
-
-        console.log("-----------------------------------------------");
-        console.log("Beğenilmeyen Filmler;");
-        console.log("-----------------------------------------------");
-        begenilmeyenFilmler.forEach((film) => {
-            let ifade = film[1] + ", " +
-                film[2] + ", " +
-                film[3] + ", " +
-                film[4] + ", " +
-                film[5] + ", " +
-                film[7] + ", " +
-                film[8];
-
-            console.log(film[1]);
-            this.siniflandirici.learn(ifade, "önerilmez");
-        });
-
-        console.log("-----------------------------------------------");
-        console.log("Önerilen Filmler;");
-        console.log("-----------------------------------------------");
-        tumFilmler.forEach((film) => {
-            let ifade = film[1] + ", " +
-                film[2] + ", " +
-                film[3] + ", " +
-                film[4] + ", " +
-                film[5] + ", " +
-                film[7] + ", " +
-                film[8];
-
-            if (this.siniflandirici.categorize(ifade) === "önerilir") {
-                console.log(film[1]);
-            }
-        });
-
-        console.log("-----------------------------------------------");
-        console.log("Önerilmeyen Filmler;");
-        console.log("-----------------------------------------------");
-        tumFilmler.forEach((film) => {
-            let ifade = film[1] + ", " +
-                film[2] + ", " +
-                film[3] + ", " +
-                film[4] + ", " +
-                film[5] + ", " +
-                film[7] + ", " +
-                film[8];
-
-            if (this.siniflandirici.categorize(ifade) === "önerilmez") {
-                console.log(film[1]);
-            }
-        });
-        console.log("-----------------------------------------------");
     }
 
     private Kaydet() {
