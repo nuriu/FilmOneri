@@ -9,6 +9,7 @@ $(document).ready(() => {
     document.getElementById("menuBegendiginizFilmler").addEventListener("click", begenilenFilmleriListele);
     document.getElementById("menuBegenmediginizFilmler").addEventListener("click", begenilmeyenFilmleriListele);
     document.getElementById("menuOnerdigimizFilmler").addEventListener("click", onerilenFilmleriListele);
+    document.getElementById("menuOnermedigimizFilmler").addEventListener("click", onerilmeyenFilmleriListele);
 
     db = new Veritabani();
 
@@ -58,5 +59,12 @@ function onerilenFilmleriListele() {
     if ($("a[href='#onerdigimizFilmler']").hasClass("active") === false) {
         db.Ogren();
         db.OnerilenFilmleriListele();
+    }
+}
+
+function onerilmeyenFilmleriListele() {
+    if ($("a[href='#onermedigimizFilmler']").hasClass("active") === false) {
+        db.Ogren();
+        db.OnerilmeyenFilmleriListele();
     }
 }

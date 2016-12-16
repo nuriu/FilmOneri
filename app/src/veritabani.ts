@@ -148,8 +148,6 @@ export class Veritabani {
     }
 
     public OnerilenFilmleriListele() {
-        this.Ogren();
-
         $("#onerilenFilmlerListe").html("");
         let tumFilmler = this.db.exec("SELECT * FROM Filmler");
         tumFilmler = tumFilmler[0].values;
@@ -172,6 +170,34 @@ export class Veritabani {
                     film[8];
                 if (this.siniflandirici.categorize(ifade) === "önerilir") {
                     this.FilmKartBloguEkle("onerilenFilmlerListe", film, true);
+                }
+            }
+        });
+    }
+
+    public OnerilmeyenFilmleriListele() {
+        $("#onerilmeyenFilmlerListe").html("");
+        let tumFilmler = this.db.exec("SELECT * FROM Filmler");
+        tumFilmler = tumFilmler[0].values;
+
+        tumFilmler.forEach((film) => {
+            let kontrol = true;
+            this.begenilmeyenID.forEach((id) => {
+                if (film[0] === id) {
+                    kontrol = false;
+                }
+            });
+
+            if (kontrol) {
+                let ifade = film[1] + ", " +
+                    film[2] + ", " +
+                    film[3] + ", " +
+                    film[4] + ", " +
+                    film[5] + ", " +
+                    film[7] + ", " +
+                    film[8];
+                if (this.siniflandirici.categorize(ifade) === "önerilmez") {
+                    this.FilmKartBloguEkle("onerilmeyenFilmlerListe", film, true);
                 }
             }
         });
