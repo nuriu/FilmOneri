@@ -215,13 +215,74 @@ export class Veritabani {
         kod += "<p style='padding-bottom:5px;'>Senarist(ler): " + film[3] + "</p>";
         kod += "<p>Oyuncular: " + film[4] + "</p><br/>";
         if (tur) {
-            kod += '<div class="card-action"><a href="#">BEĞENDİM</a><a href="#">BEĞENMEDİM</a></div>';
+            kod += '<div class="card-action">\
+            <a href="#" id="+' + film[0] + '">BEĞENDİM</a>\
+            <a href="#" id="-' + film[0] + '">BEĞENMEDİM</a>\
+            </div>';
         } else {
             kod += "<p>Konu: " + film[8] + "</p><br/>";
         }
         kod += "</div>";
         kod += "</div></div>";
         $("#" + id).append(kod);
+
+        document.getElementById("+" + film[0]).addEventListener("click", () => {
+            this.BegenilenFilmlereEkle(film[0]);
+        });
+
+        document.getElementById("-" + film[0]).addEventListener("click", () => {
+            this.BegenilmeyenFilmlereEkle(film[0]);
+        });
+    }
+
+    private BegenilenFilmlereEkle(id: string) {
+        let kontrol = this.db.exec("SELECT * FROM BegenilmeyenFilmler WHERE FilmID = " + id);
+
+        if (kontrol.length === 0) {
+            let kontrol2 = this.db.exec("SELECT * FROM BegenilenFilmler WHERE FilmID = " + id);
+
+            if (kontrol2.length === 0) {
+                let komut: string = "";
+
+                komut += "INSERT INTO BegenilenFilmler('FilmID')";
+                komut += "VALUES(";
+                komut += "'" + id + "'";
+                komut += ")";
+
+                this.db.run(komut);
+                this.Kaydet();
+                Materialize.toast("Film beğenilenler listenize eklendi!", 3000, "teal rounded");
+            } else {
+                Materialize.toast("Bu film zaten beğenilenler listenizde!", 3000, "red rounded");
+            }
+        } else {
+            Materialize.toast("Bu film beğenilmeyenler listenizde!", 3000, "red rounded");
+        }
+    }
+
+    private BegenilmeyenFilmlereEkle(id: string) {
+        let kontrol = this.db.exec("SELECT * FROM BegenilenFilmler WHERE FilmID = " + id);
+
+        if (kontrol.length === 0) {
+            let kontrol2 = this.db.exec("SELECT * FROM BegenilmeyenFilmler WHERE FilmID = " + id);
+
+            if (kontrol2.length === 0) {
+                let komut: string = "";
+
+                komut += "INSERT INTO BegenilmeyenFilmler('FilmID')";
+                komut += "VALUES(";
+                komut += "'" + id + "'";
+                komut += ")";
+
+                this.db.run(komut);
+                this.Kaydet();
+                Materialize.toast("Film beğenilmeyenler listenize eklendi!", 3000, "teal rounded");
+            } else {
+                Materialize.toast("Bu film zaten beğenilmeyenler listenizde!", 3000, "red rounded");
+            }
+        } else {
+            Materialize.toast("Bu film beğenilenler listenizde!", 3000, "red rounded");
+        }
     }
 
     private Kaydet() {
