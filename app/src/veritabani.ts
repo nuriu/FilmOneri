@@ -206,18 +206,63 @@ export class Veritabani {
     public FilmAra(id: string, ad: string) {
         let filmler = this.db.exec("SELECT * FROM Filmler WHERE FilmAdi LIKE '%" + ad + "%'");
         filmler = filmler[0].values;
-        if (id == "autocomplete-tum" && id == "autocomplete-onerilen" && id == "autocomplete-onerilmeyen") {
+        if (id === "autocomplete-tum") {
             filmler.forEach((film) => {
-                this.FilmKartBloguEkle(id, film, true);
+                this.FilmKartBloguEkle("tumFilmlerListe", film, true);
             });
-        }
-        else
-        {
+        } else if (id === "autocomplete-onerilen") {
             filmler.forEach((film) => {
-                this.FilmKartBloguEkle(id, film, false);
+                let ifade = film[1] + ", " +
+                    film[2] + ", " +
+                    film[3] + ", " +
+                    film[4] + ", " +
+                    film[5] + ", " +
+                    film[7] + ", " +
+                    film[8];
+                if (this.siniflandirici.categorize(ifade) === "önerilir") {
+                    this.FilmKartBloguEkle("onerilenFilmlerListe", film, true);
+                }
             });
-        }
+        } else if (id === "autocomplete-onerilmeyen") {
+            filmler.forEach((film) => {
+                let ifade = film[1] + ", " +
+                    film[2] + ", " +
+                    film[3] + ", " +
+                    film[4] + ", " +
+                    film[5] + ", " +
+                    film[7] + ", " +
+                    film[8];
+                if (this.siniflandirici.categorize(ifade) === "önerilmez") {
+                    this.FilmKartBloguEkle("onerilmeyenFilmlerListe", film, true);
+                }
+            });
+        } else if (id === "autocomplete-begenilen") {
+            filmler.forEach((film) => {
+                let kontrol = true;
+                this.begenilenID.forEach((id) => {
+                    if (film[0] === id) {
+                        kontrol = false;
+                    }
+                });
 
+                if (kontrol) {
+                    this.FilmKartBloguEkle("begenilenFilmlerListe", film, false);
+                }
+            });
+        } else {
+            filmler.forEach((film) => {
+                let kontrol = true;
+                this.begenilmeyenID.forEach((id) => {
+                    if (film[0] === id) {
+                        kontrol = false;
+                    }
+                });
+
+                if (kontrol) {
+                    this.FilmKartBloguEkle("begenilmeyenFilmlerListe", film, false);
+                }
+            });
+        }
     }
 
     private FilmKartBloguEkle(id: string, film: any, tur: boolean) {

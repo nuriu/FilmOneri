@@ -36,34 +36,34 @@ $(document).ready(() => {
         $(":input").removeAttr("checked").removeAttr("selected").not(":button, :submit, :reset, :hidden, :radio, :checkbox").val("").blur();
     });
 
-    $("#autocomplete-tum").keyup(function () {
+    $("#autocomplete-tum").keyup(() => {
         $("#tumFilmlerListe").empty();
         let aranacakFilm = $("#autocomplete-tum").val();
         db.FilmAra("autocomplete-tum", aranacakFilm);
     });
 
-    $("#autocomplete-begenilen").keyup(function () {
+    $("#autocomplete-begenilen").keyup(() => {
         $("#begenilenFilmlerListe").empty();
         let aranacakFilm = $("#autocomplete-begenilen").val();
-        db.FilmAra("autocomplete-begenilen",aranacakFilm);
+        db.FilmAra("autocomplete-begenilen", aranacakFilm);
     });
 
-    $("#autocomplete-begenilmeyen").keyup(function () {
+    $("#autocomplete-begenilmeyen").keyup(() => {
         $("#begenilmeyenFilmlerListe").empty();
         let aranacakFilm = $("#autocomplete-begenilmeyen").val();
         db.FilmAra("autocomplete-begenilmeyen", aranacakFilm);
     });
 
-    $("#autocomplete-onerilen").keyup(function () {
+    $("#autocomplete-onerilen").keyup(() => {
         $("#onerilenFilmlerListe").empty();
         let aranacakFilm = $("#autocomplete-onerilen").val();
         db.FilmAra("autocomplete-onerilen", aranacakFilm);
     });
 
-    $("#autocomplete-onerilmeyen").keyup(function () {
+    $("#autocomplete-onerilmeyen").keyup(() => {
         $("#onerilmeyenFilmlerListe").empty();
         let aranacakFilm = $("#autocomplete-onerilmeyen").val();
-        db.FilmAra("autocomplete-onerilmeyen" ,aranacakFilm);
+        db.FilmAra("autocomplete-onerilmeyen", aranacakFilm);
     });
 });
 
