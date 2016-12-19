@@ -203,6 +203,23 @@ export class Veritabani {
         });
     }
 
+    public FilmAra(id: string, ad: string) {
+        let filmler = this.db.exec("SELECT * FROM Filmler WHERE FilmAdi LIKE '%" + ad + "%'");
+        filmler = filmler[0].values;
+        if (id == "autocomplete-tum" && id == "autocomplete-onerilen" && id == "autocomplete-onerilmeyen") {
+            filmler.forEach((film) => {
+                this.FilmKartBloguEkle(id, film, true);
+            });
+        }
+        else
+        {
+            filmler.forEach((film) => {
+                this.FilmKartBloguEkle(id, film, false);
+            });
+        }
+
+    }
+
     private FilmKartBloguEkle(id: string, film: any, tur: boolean) {
         let kod: string = "";
         kod += '<div class="row"><div class="card horizontal blue-grey darken-3 z-depth-4">';
